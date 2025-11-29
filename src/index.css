@@ -11,6 +11,7 @@
     sans-serif;
   color: #111827;
   background-color: transparent;
+  font-size: larger;
 }
 
 body {
@@ -93,10 +94,12 @@ body {
 .login-page {
   position: relative;
   width: 100vw;
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
+  overflow-y: auto;        /* allow vertical scroll */
   display: flex;
-  background:transparent ;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
 }
 
 
@@ -117,13 +120,12 @@ body {
 
 /* login content above overlay */
 .login-content {
-  margin-left: auto;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   align-items: center;
-  padding: 2rem 4rem;
-  position: relative;
-  z-index: 2;      /* explicit */
+  justify-content: center;
+  padding: 2rem 1.5rem;
+  z-index: 2;
 }
 
 
@@ -135,12 +137,13 @@ body {
   -webkit-backdrop-filter: blur(16px) saturate(150%);
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.35);
-  padding: 2rem 2.5rem;
-  max-width: 420px;
+  padding: 18px 20px;              /* fixed padding, no negative value */
+  max-width: 420px;                /* keeps card narrow so CAPTCHA row fits */
   width: 100%;
   box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45);
   color: #ffffff;
 }
+
 
 .login-header {
   margin-bottom: 16px;
@@ -787,27 +790,28 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 40;
+  z-index: 2;
 }
 
 .modal-card {
-  max-width: 420px;
-  width: 90%;
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 20px 18px 16px;
-  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.25);
+  background: rgb(44, 44, 85);
+  color: #111827;              /* dark text inside modal */
+  padding: 0;
+  overflow: hidden;
 }
 
 .modal-title {
-  margin: 0 0 6px;
-  font-size: 1.1rem;
+  color:rgb(255, 255, 255);
 }
 
 .modal-text {
-  margin: 0 0 14px;
-  font-size: 0.9rem;
-  color: #4b5563;
+  color: rgb(255, 255, 255);
+}
+
+/* Table text inside admin/citizen modals */
+.admin-table th,
+.admin-table td {
+  color: rgb(255, 255, 255);
 }
 
 /* Admin tables */
@@ -819,15 +823,10 @@ body {
   font-size: 0.85rem;
 }
 
-.admin-table th,
-.admin-table td {
-  border-bottom: 1px solid #e5e7eb;
-  padding: 6px 8px;
-  text-align: left;
-}
+
 
 .admin-table th {
-  background: #f3f4f6;
+  background: navy;
   font-weight: 600;
 }
 

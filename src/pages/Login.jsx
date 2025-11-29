@@ -24,6 +24,20 @@ function Login({ onLogin, isAuthenticated }) {
   const [success, setSuccess] = useState("");
   const navigate = useNavigate();
 
+  // CAPTCHA state
+  const [captcha, setCaptcha] = useState("7K4Q");
+  const [captchaInput, setCaptchaInput] = useState("");
+
+  const regenerateCaptcha = () => {
+    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    let code = "";
+    for (let i = 0; i < 4; i++) {
+      code += chars[Math.floor(Math.random() * chars.length)];
+    }
+    setCaptcha(code);
+    setCaptchaInput("");
+  };
+
   useEffect(() => {
     if (isAuthenticated) {
       navigate("/");
@@ -51,6 +65,13 @@ function Login({ onLogin, isAuthenticated }) {
     e.preventDefault();
     setError("");
     setSuccess("");
+
+    // CAPTCHA check
+    if (captchaInput.trim().toUpperCase() !== captcha) {
+      setError("Security check failed. Please type the code shown above.");
+      regenerateCaptcha();
+      return;
+    }
 
     if (!isStrongPassword(signupData.password)) {
       setError(
@@ -175,6 +196,7 @@ function Login({ onLogin, isAuthenticated }) {
                     setError("");
                     setSuccess("");
                     setMode("signup");
+                    regenerateCaptcha();
                   }}
                 >
                   Create an account
@@ -237,7 +259,10 @@ function Login({ onLogin, isAuthenticated }) {
                     className="form-input"
                     value={signupData.location}
                     onChange={(e) =>
-                      setSignupData((d) => ({ ...d, location: e.target.value }))
+                      setSignupData((d) => ({
+                        ...d,
+                        location: e.target.value,
+                      }))
                     }
                     required
                   />
@@ -277,7 +302,10 @@ function Login({ onLogin, isAuthenticated }) {
                                 const next = new Set(d.expertise);
                                 if (checked) next.add(cat);
                                 else next.delete(cat);
-                                return { ...d, expertise: Array.from(next) };
+                                return {
+                                  ...d,
+                                  expertise: Array.from(next),
+                                };
                               });
                             }}
                           />{" "}
@@ -288,6 +316,47 @@ function Login({ onLogin, isAuthenticated }) {
                   </label>
                 )}
 
+                {/* CAPTCHA block */}
+                <label className="form-label">
+                  Security check
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "8px",
+                      alignItems: "center",
+                      marginTop: "4px",
+                    }}
+                  >
+                    <span
+                      style={{
+                        padding: "6px 12px",
+                        borderRadius: "10px",
+                        background: "#111827",
+                        color: "#f9fafb",
+                        letterSpacing: "0.25em",
+                        fontWeight: 700,
+                      }}
+                    >
+                      {captcha}
+                    </span>
+                    <input
+                      className="form-input"
+                      style={{ flex: 1 }}
+                      value={captchaInput}
+                      onChange={(e) => setCaptchaInput(e.target.value)}
+                      placeholder="Type the code"
+                      required
+                    />
+                    <button
+                      type="button"
+                      className="link-chip"
+                      onClick={regenerateCaptcha}
+                    >
+                      Refresh
+                    </button>
+                  </div>
+                </label>
+
                 <label className="form-label">
                   Password
                   <input
@@ -295,7 +364,10 @@ function Login({ onLogin, isAuthenticated }) {
                     className="form-input"
                     value={signupData.password}
                     onChange={(e) =>
-                      setSignupData((d) => ({ ...d, password: e.target.value }))
+                      setSignupData((d) => ({
+                        ...d,
+                        password: e.target.value,
+                      }))
                     }
                     required
                   />

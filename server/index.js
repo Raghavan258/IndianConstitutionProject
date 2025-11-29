@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import authRoutes from "./routes/auth.js";
 import queryRoutes from "./routes/queries.js";
+import articleRoutes from "./routes/articles.js"; // <- add this
 
 const app = express();
 const PORT = 5000;
@@ -20,6 +21,7 @@ mongoose
 
 app.use("/api/auth", authRoutes);
 app.use("/api/queries", queryRoutes);
+app.use("/articles", articleRoutes); // <- add this
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

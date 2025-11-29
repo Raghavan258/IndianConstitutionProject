@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const API_BASE = "http://localhost:4000";
+const API_BASE = "http://localhost:5000";
 
 function AdminArticles() {
   const [articles, setArticles] = useState([]);
@@ -103,7 +103,7 @@ function AdminArticles() {
       <h1 className="hero-title">Admin – Manage Articles</h1>
       <p className="hero-text">
         Add new articles, edit existing entries, or delete outdated content.
-        Data is stored in a mock API (JSON Server) instead of only in memory.
+        Data is stored in the backend API instead of only in memory.
       </p>
 
       {apiError && <div className="login-error">{apiError}</div>}

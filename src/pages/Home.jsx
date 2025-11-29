@@ -403,9 +403,27 @@ function EducatorDashboard({ userId }) {
 
   // Demo modules but now editable
   const [modules, setModules] = useState([
-    { id: 1, title: "Preamble Basics", status: "Published", description: "", videoUrl: "" },
-    { id: 2, title: "Fundamental Rights – Part 1", status: "Draft", description: "", videoUrl: "" },
-    { id: 3, title: "Duties in Daily Life", status: "In Review", description: "", videoUrl: "" },
+    {
+      id: 1,
+      title: "Preamble Basics",
+      status: "Published",
+      description: "Simple explanation of the Preamble with classroom examples.",
+      videoUrl: "",
+    },
+    {
+      id: 2,
+      title: "Fundamental Rights – Part 1",
+      status: "Draft",
+      description: "First part of a module on equality and freedom rights.",
+      videoUrl: "",
+    },
+    {
+      id: 3,
+      title: "Duties in Daily Life",
+      status: "In Review",
+      description: "Connecting Article 51A duties to students’ daily routines.",
+      videoUrl: "",
+    },
   ]);
 
   const [moduleModalOpen, setModuleModalOpen] = useState(false);
@@ -468,7 +486,7 @@ function EducatorDashboard({ userId }) {
 
   return (
     <>
-      {/* Teaching Toolkit – unchanged */}
+      {/* Teaching Toolkit – original card */}
       <div className="card">
         <h2 className="card-title">Teaching Toolkit</h2>
         <p className="card-text">
@@ -482,7 +500,7 @@ function EducatorDashboard({ userId }) {
         </ul>
       </div>
 
-      {/* Module Pipeline – now editable */}
+      {/* Module Pipeline – editable with video URL */}
       <div className="card">
         <h2 className="card-title">Module Pipeline</h2>
         <p className="card-text">
@@ -509,9 +527,25 @@ function EducatorDashboard({ userId }) {
         </p>
       </div>
 
-      {/* Assigned Queries – unchanged */}
+      {/* Assigned Queries – with notification badge + chat-style view */}
       <div className="card">
-        <h2 className="card-title">Assigned Queries</h2>
+        <h2 className="card-title">
+          Assigned Queries
+          {queries.length > 0 && (
+            <span
+              style={{
+                marginLeft: "8px",
+                fontSize: "0.8rem",
+                background: "#dc2626",
+                color: "#ffffff",
+                borderRadius: "999px",
+                padding: "2px 8px",
+              }}
+            >
+              {queries.length} new
+            </span>
+          )}
+        </h2>
         <p className="card-text">
           Questions from citizens routed to you based on your expertise.
         </p>
@@ -521,14 +555,33 @@ function EducatorDashboard({ userId }) {
           <ul className="article-list">
             {queries.map((q) => (
               <li key={q._id} style={{ marginBottom: "1rem" }}>
-                <div>
-                  <strong>[{q.category}]</strong> {q.text}{" "}
-                  {q.askedBy && `— from ${q.askedBy.name}`}
+                {/* Chat bubble for citizen question */}
+                <div
+                  style={{
+                    padding: "8px 10px",
+                    borderRadius: "12px",
+                    background: "#eff6ff",
+                    color: "#1e3a8a",
+                    fontSize: "0.9rem",
+                  }}
+                >
+                  <strong>Citizen:</strong> [{q.category}] {q.text}{" "}
+                  {q.askedBy && `— ${q.askedBy.name}`}
                 </div>
 
+                {/* Educator answer bubble or reply form */}
                 {q.answer ? (
-                  <div style={{ marginTop: "0.4rem" }}>
-                    <strong>Your answer:</strong> {q.answer}
+                  <div
+                    style={{
+                      marginTop: "0.3rem",
+                      padding: "8px 10px",
+                      borderRadius: "12px",
+                      background: "#dcfce7",
+                      color: "#166534",
+                      fontSize: "0.9rem",
+                    }}
+                  >
+                    <strong>You:</strong> {q.answer}
                   </div>
                 ) : (
                   <form
@@ -573,7 +626,7 @@ function EducatorDashboard({ userId }) {
                     <textarea
                       className="form-textarea"
                       rows="2"
-                      placeholder="Type your answer..."
+                      placeholder="Reply to this query..."
                       value={answerDrafts[q._id] || ""}
                       onChange={(e) =>
                         setAnswerDrafts((prev) => ({
@@ -587,7 +640,7 @@ function EducatorDashboard({ userId }) {
                       className="btn-primary"
                       style={{ marginTop: "0.3rem" }}
                     >
-                      Submit Answer
+                      Send Reply
                     </button>
                   </form>
                 )}
@@ -715,6 +768,9 @@ function CitizenDashboard({ userId }) {
   const [queryMessage, setQueryMessage] = useState("");
   const [myQueries, setMyQueries] = useState([]);
 
+  // Demo educator modules visible to citizens when Published
+  const [educatorModules, setEducatorModules] = useState([]);
+
   const toggleDuty = (id) => {
     setDuties((prev) =>
       prev.map((d) => (d.id === id ? { ...d, done: !d.done } : d))
@@ -782,7 +838,39 @@ function CitizenDashboard({ userId }) {
     if (userId) {
       loadMyQueries(userId, setMyQueries);
     }
+
+    // Demo educator modules; replace with API call later if needed
+    setEducatorModules([
+      {
+        id: 1,
+        title: "Preamble Basics",
+        status: "Published",
+        description:
+          "Simple explanation of the Preamble with classroom examples.",
+        videoUrl: "",
+      },
+      {
+        id: 2,
+        title: "Fundamental Rights – Part 1",
+        status: "Draft",
+        description: "",
+        videoUrl: "",
+      },
+      {
+        id: 3,
+        title: "Duties in Daily Life",
+        status: "In Review",
+        description: "",
+        videoUrl: "",
+      },
+    ]);
   }, [userId]);
+
+  const publishedModules = educatorModules.filter(
+    (m) =>
+      (m.status === "Published" || m.status === "published") &&
+      (m.description || m.videoUrl)
+  );
 
   return (
     <>
@@ -881,6 +969,37 @@ function CitizenDashboard({ userId }) {
         </div>
       </div>
 
+      {/* Published educator modules for citizens */}
+      {publishedModules.length > 0 && (
+        <div className="card">
+          <h2 className="card-title">Educator Modules for You</h2>
+          <p className="card-text">
+            Access modules that educators have published for citizen learning.
+          </p>
+          <ul className="article-list">
+            {publishedModules.map((m) => (
+              <li key={m.id} style={{ marginBottom: "0.5rem" }}>
+                <div className="educator-module-name">{m.title}</div>
+                {m.description && (
+                  <div className="admin-article-meta">{m.description}</div>
+                )}
+                {m.videoUrl && (
+                  <a
+                    href={m.videoUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="link-chip"
+                    style={{ marginTop: "4px", display: "inline-block" }}
+                  >
+                    Open Video Lecture
+                  </a>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       <div className="card">
         <h2 className="card-title">Community & Support</h2>
         <p className="card-text">
@@ -975,16 +1094,33 @@ function CitizenDashboard({ userId }) {
         ) : (
           <ul className="article-list">
             {myQueries.map((q) => (
-              <li key={q._id}>
-                <div>
-                  <strong>[{q.category}]</strong> {q.text}
+              <li key={q._id} style={{ marginBottom: "1rem" }}>
+                <div
+                  style={{
+                    padding: "8px 10px",
+                    borderRadius: "12px",
+                    background: "#eff6ff",
+                    color: "#1e3a8a",
+                    fontSize: "0.9rem",
+                  }}
+                >
+                  <strong>You:</strong> [{q.category}] {q.text}
                 </div>
                 {q.answer ? (
-                  <div style={{ marginTop: "0.3rem" }}>
-                    <strong>Answer:</strong> {q.answer}
+                  <div
+                    style={{
+                      marginTop: "0.3rem",
+                      padding: "8px 10px",
+                      borderRadius: "12px",
+                      background: "#dcfce7",
+                      color: "#166534",
+                      fontSize: "0.9rem",
+                    }}
+                  >
+                    <strong>Educator:</strong> {q.answer}
                   </div>
                 ) : (
-                  <div style={{ marginTop: "0.3rem" }}>
+                  <div style={{ marginTop: "0.3rem", fontSize: "0.9rem" }}>
                     Awaiting answer…
                   </div>
                 )}
@@ -996,6 +1132,7 @@ function CitizenDashboard({ userId }) {
     </>
   );
 }
+
 
 /* ---------------- Legal Expert Dashboard ---------------- */
 
