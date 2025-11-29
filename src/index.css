@@ -1,0 +1,820 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  color: #111827;
+  background-color: #f3f4f6;
+}
+
+body {
+  margin: 0;
+}
+
+.app-root {
+  min-height: 100vh;
+}
+
+/* Navbar */
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 32px;
+  background: #111827;
+  color: #f9fafb;
+}
+
+.navbar-logo {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 16px;
+}
+
+.nav-link {
+  color: #e5e7eb;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.nav-link.active {
+  color: #ffffff;
+  border-bottom: 2px solid #fbbf24;
+}
+
+.btn-logout {
+  background: transparent;
+  border: 1px solid #f9fafb;
+  color: #f9fafb;
+  padding: 6px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+/* Generic page */
+
+.page {
+  padding: 32px min(5vw, 48px);
+}
+
+/* Login page */
+
+.login-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+/* Constitution background for login */
+
+.login-page--constitution {
+  position: relative;
+  min-height: 100vh;
+  background-image: url("/constitution_bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.login-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  z-index: 0;
+}
+
+/* Solid dark login card */
+
+.login-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 440px;
+  padding: 28px 26px 26px;
+  border-radius: 22px;
+  background: rgba(17, 24, 39, 0.9);
+  box-shadow: 0 22px 55px rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(148, 163, 184, 0.4);
+}
+
+
+
+.login-header {
+  margin-bottom: 16px;
+}
+
+.login-title {
+  margin: 0 0 4px;
+  font-size: 1.6rem;
+  color: #f9fafb;
+}
+
+.login-subtitle {
+  margin: 0 0 20px;
+  color: #e5e7eb;
+  font-size: 0.9rem;
+}
+
+.login-error {
+  margin-bottom: 16px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #fee2e2;
+  color: #b91c1c;
+  font-size: 0.85rem;
+}
+
+.login-success {
+  margin-bottom: 16px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #dcfce7;
+  color: #166534;
+  font-size: 0.85rem;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.form-label {
+  font-size: 0.85rem;
+  color: #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-input {
+  border-radius: 999px;
+  border: 1px solid #4b5563;
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  outline: none;
+  background: rgba(15, 23, 42, 0.95);
+  color: #f9fafb;
+}
+
+.form-input::placeholder {
+  color: #9ca3af;
+}
+
+.form-input:focus {
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.6);
+}
+
+.form-textarea {
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  padding: 10px 12px;
+  font-size: 0.9rem;
+  resize: vertical;
+}
+
+.btn-primary {
+  margin-top: 10px;
+  width: 100%;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #2563eb, #4f46e5);
+  color: #f9fafb;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.login-footer-text {
+  margin-top: 16px;
+  font-size: 0.8rem;
+  color: #e5e7eb;
+  text-align: center;
+}
+
+/* Password hint */
+
+.password-hint {
+  margin: 4px 0 0;
+  font-size: 0.78rem;
+  color: #9ca3af;
+}
+
+/* Home page */
+
+.hero {
+  padding: 24px 0 12px;
+}
+
+.hero-title {
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+
+.hero-text {
+  color: #4b5563;
+  max-width: 600px;
+  font-size: 0.98rem;
+}
+
+.hero-actions {
+  margin-top: 16px;
+}
+
+.grid-sections {
+  margin-top: 28px;
+  display: grid;
+  gap: 18px;
+}
+
+@media (min-width: 768px) {
+  .grid-sections {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 18px 16px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+}
+
+.card-title {
+  margin: 0 0 6px;
+  font-size: 1rem;
+}
+
+.card-text {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+/* Articles list (if used elsewhere) */
+
+.articles-list {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.article-item {
+  background: #ffffff;
+  padding: 14px 16px;
+  border-radius: 14px;
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+}
+
+/* Citizen learning path */
+
+.learning-path {
+  margin-top: 16px;
+}
+
+.learning-path-line {
+  position: relative;
+  height: 4px;
+  border-radius: 999px;
+  background: #e5e7eb;
+  overflow: hidden;
+}
+
+.learning-path-line-filled {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(90deg, #2563eb, #4f46e5);
+  transition: width 0.3s ease;
+}
+
+.learning-path-steps {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.learning-path-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.8rem;
+  color: #9ca3af;
+}
+
+.learning-path-step--current .learning-path-node {
+  background: #2563eb;
+  color: #f9fafb;
+}
+
+.learning-path-step--done .learning-path-node {
+  background: #22c55e;
+  color: #f9fafb;
+}
+
+.learning-path-node {
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  border: 2px solid #d1d5db;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  background: #ffffff;
+}
+
+.learning-path-label {
+  margin-top: 4px;
+}
+
+/* Admin stats */
+
+.admin-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.admin-stat {
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #f3f4f6;
+}
+
+.admin-stat-value {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.admin-stat-label {
+  font-size: 0.85rem;
+  color: #4b5563;
+}
+
+.admin-stat-hint {
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+
+/* Educator modules */
+
+.educator-modules {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.educator-module-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: #f9fafb;
+}
+
+.educator-module-name {
+  font-weight: 500;
+}
+
+.educator-module-status {
+  font-size: 0.78rem;
+  padding: 3px 8px;
+  border-radius: 999px;
+}
+
+.educator-module-status--published {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.educator-module-status--draft {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.educator-module-status--in-review {
+  background: #fef9c3;
+  color: #92400e;
+}
+
+/* Legal expert tasks */
+
+.legal-tasks {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.legal-task-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.88rem;
+}
+
+.legal-task-bullet {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #7c3aed;
+  margin-top: 6px;
+}
+
+.legal-task-title {
+  font-weight: 600;
+}
+
+.legal-task-hint {
+  font-size: 0.78rem;
+  color: #6b7280;
+}
+
+/* Citizen progress */
+
+.student-progress {
+  margin-top: 12px;
+  padding-top: 8px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.student-progress-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: #4b5563;
+  margin-bottom: 6px;
+}
+
+.student-progress-bar {
+  position: relative;
+  height: 6px;
+  border-radius: 999px;
+  background: #e5e7eb;
+  overflow: hidden;
+}
+
+.student-progress-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #22c55e, #16a34a);
+}
+
+.student-progress-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-size: 0.78rem;
+  color: #6b7280;
+}
+
+/* Generic link chips */
+
+.student-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 8px 0 12px;
+}
+
+.link-chip {
+  border: 1px solid #d1d5db;
+  background: #f9fafb;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.link-chip:hover {
+  background: #e5e7eb;
+}
+
+.link-chip--danger {
+  border-color: #fecaca;
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+/* Student query form */
+
+.student-query-form {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Duties checklists */
+
+.duties-list {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.duty-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.88rem;
+}
+
+.duty-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.duty-checkbox {
+  width: 16px;
+  height: 16px;
+}
+
+.duty-text {
+  color: #374151;
+}
+
+.duty-text--done {
+  text-decoration: line-through;
+  color: #9ca3af;
+}
+
+.duty-status {
+  font-size: 0.78rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+/* Video library */
+
+.video-grid {
+  margin-top: 20px;
+  display: grid;
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .video-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.video-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 12px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+  display: flex;
+  gap: 12px;
+}
+
+.video-thumbnail {
+  width: 140px;
+  height: 80px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #e0f2fe, #c7d2fe);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.video-thumb-text {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.video-info {
+  flex: 1;
+}
+
+.video-title {
+  margin: 0 0 4px;
+  font-size: 0.98rem;
+}
+
+.video-meta {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+/* Notes & quizzes grids */
+
+.notes-grid,
+.quiz-grid {
+  margin-top: 20px;
+  display: grid;
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .notes-grid,
+  .quiz-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.note-card,
+.quiz-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+}
+
+.note-title,
+.quiz-title {
+  margin: 0 0 6px;
+  font-size: 1rem;
+}
+
+.note-summary,
+.quiz-meta {
+  margin: 0 0 10px;
+  font-size: 0.88rem;
+  color: #6b7280;
+}
+
+/* Forums */
+
+.forum-grid {
+  margin-top: 20px;
+  display: grid;
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .forum-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.forum-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+}
+
+.forum-title {
+  margin: 0 0 6px;
+  font-size: 0.98rem;
+}
+
+.forum-meta {
+  margin: 0 0 10px;
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+/* Card actions */
+
+.card-actions {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Simple centered modal */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 40;
+}
+
+.modal-card {
+  max-width: 420px;
+  width: 90%;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px 18px 16px;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.25);
+}
+
+.modal-title {
+  margin: 0 0 6px;
+  font-size: 1.1rem;
+}
+
+.modal-text {
+  margin: 0 0 14px;
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+/* Admin tables */
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+  font-size: 0.85rem;
+}
+
+.admin-table th,
+.admin-table td {
+  border-bottom: 1px solid #e5e7eb;
+  padding: 6px 8px;
+  text-align: left;
+}
+
+.admin-table th {
+  background: #f3f4f6;
+  font-weight: 600;
+}
+
+/* Admin article management shared styles */
+
+.admin-article-list {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin-article-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: #f9fafb;
+  font-size: 0.9rem;
+}
+
+.admin-article-title {
+  font-weight: 600;
+}
+
+.admin-article-meta {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.admin-article-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.admin-article-empty {
+  font-size: 0.85rem;
+  color: #9ca3af;
+}
+
+.admin-article-form {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-article-form-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}

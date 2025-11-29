@@ -1,0 +1,15 @@
+{
+  "articles": [
+    { "id": 1, "title": "Preamble Overview", "category": "Preamble" },
+    { "id": 2, "title": "Fundamental Rights – Articles 14–21", "category": "Rights" }
+  ],
+  "modules": [
+    { "id": 1, "title": "Preamble Basics", "status": "Live" }
+  ],
+  "quizzes": [
+    { "id": 1, "title": "Constitution Basics Quiz", "questions": 10, "level": "Easy" }
+  ],
+  "users": [
+    { "id": 1, "email": "admin@example.com", "password": "Admin@123", "role": "admin" }
+  ]
+}
