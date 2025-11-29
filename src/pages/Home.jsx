@@ -42,7 +42,6 @@ function AdminDashboard() {
     );
   };
 
-  // Demo data
   const [usersByRole] = useState({
     student: [
       { id: 1, name: "Aarav", email: "aarav@example.com" },
@@ -85,7 +84,6 @@ function AdminDashboard() {
     },
   ]);
 
-  // Admin‑only modal
   const [adminModalOpen, setAdminModalOpen] = useState(false);
   const [modalType, setModalType] = useState(null); // "users" | "lessons" | "lessonDetail" | "violations"
   const [selectedRole, setSelectedRole] = useState("student");
@@ -398,15 +396,26 @@ function AdminDashboard() {
 }
 
 /* ---------------- Educator Dashboard ---------------- */
+
 function EducatorDashboard({ userId }) {
   const [queries, setQueries] = useState([]);
   const [answerDrafts, setAnswerDrafts] = useState({});
 
-  const modules = [
-    { name: "Preamble Basics", status: "Published" },
-    { name: "Fundamental Rights – Part 1", status: "Draft" },
-    { name: "Duties in Daily Life", status: "In Review" },
-  ];
+  // Demo modules but now editable
+  const [modules, setModules] = useState([
+    { id: 1, title: "Preamble Basics", status: "Published", description: "", videoUrl: "" },
+    { id: 2, title: "Fundamental Rights – Part 1", status: "Draft", description: "", videoUrl: "" },
+    { id: 3, title: "Duties in Daily Life", status: "In Review", description: "", videoUrl: "" },
+  ]);
+
+  const [moduleModalOpen, setModuleModalOpen] = useState(false);
+  const [editingModule, setEditingModule] = useState(null);
+  const [moduleForm, setModuleForm] = useState({
+    title: "",
+    description: "",
+    status: "Draft",
+    videoUrl: "",
+  });
 
   const statusClass = (status) =>
     `educator-module-status educator-module-status--${status
@@ -414,13 +423,9 @@ function EducatorDashboard({ userId }) {
       .replace(" ", "-")}`;
 
   useEffect(() => {
-    console.log("EducatorDashboard userId =", userId);
-
     const loadQueries = async () => {
       try {
-        const res = await fetch(
-          `${API_BASE}/api/queries?assignedTo=${userId}`
-        );
+        const res = await fetch(`${API_BASE}/api/queries?assignedTo=${userId}`);
         const data = await res.json();
         setQueries(data);
       } catch (err) {
@@ -433,8 +438,37 @@ function EducatorDashboard({ userId }) {
     }
   }, [userId]);
 
+  const openModuleEditor = (m) => {
+    setEditingModule(m);
+    setModuleForm({
+      title: m.title,
+      description: m.description || "",
+      status: m.status,
+      videoUrl: m.videoUrl || "",
+    });
+    setModuleModalOpen(true);
+  };
+
+  const closeModuleEditor = () => {
+    setModuleModalOpen(false);
+    setEditingModule(null);
+  };
+
+  const handleModuleSave = (e) => {
+    e.preventDefault();
+    if (!editingModule) return;
+
+    setModules((prev) =>
+      prev.map((m) =>
+        m.id === editingModule.id ? { ...m, ...moduleForm } : m
+      )
+    );
+    closeModuleEditor();
+  };
+
   return (
     <>
+      {/* Teaching Toolkit – unchanged */}
       <div className="card">
         <h2 className="card-title">Teaching Toolkit</h2>
         <p className="card-text">
@@ -448,6 +482,7 @@ function EducatorDashboard({ userId }) {
         </ul>
       </div>
 
+      {/* Module Pipeline – now editable */}
       <div className="card">
         <h2 className="card-title">Module Pipeline</h2>
         <p className="card-text">
@@ -455,21 +490,33 @@ function EducatorDashboard({ userId }) {
         </p>
         <ul className="educator-modules">
           {modules.map((m) => (
-            <li key={m.name} className="educator-module-item">
-              <span className="educator-module-name">{m.name}</span>
+            <li
+              key={m.id}
+              className="educator-module-item"
+              onClick={() =>
+                m.status !== "Published" ? openModuleEditor(m) : null
+              }
+              style={m.status !== "Published" ? { cursor: "pointer" } : {}}
+            >
+              <span className="educator-module-name">{m.title}</span>
               <span className={statusClass(m.status)}>{m.status}</span>
             </li>
           ))}
         </ul>
+        <p className="password-hint">
+          Click a Draft or In Review module to edit text or attach a video
+          lecture link.
+        </p>
       </div>
 
+      {/* Assigned Queries – unchanged */}
       <div className="card">
         <h2 className="card-title">Assigned Queries</h2>
         <p className="card-text">
           Questions from citizens routed to you based on your expertise.
         </p>
         {queries.length === 0 ? (
-          <p>No queries assigned yet.</p>
+          <p className="card-text">No queries assigned yet.</p>
         ) : (
           <ul className="article-list">
             {queries.map((q) => (
@@ -508,7 +555,6 @@ function EducatorDashboard({ userId }) {
                           alert(data.message || "Failed to save answer.");
                           return;
                         }
-                        // update this query in state
                         setQueries((prev) =>
                           prev.map((item) =>
                             item._id === q._id ? data.query : item
@@ -550,6 +596,87 @@ function EducatorDashboard({ userId }) {
           </ul>
         )}
       </div>
+
+      {/* Module edit modal */}
+      {moduleModalOpen && editingModule && (
+        <div className="modal-backdrop" onClick={closeModuleEditor}>
+          <div className="modal-card" onClick={(e) => e.stopPropagation()}>
+            <h2 className="modal-title">Edit Module</h2>
+            <p className="modal-text">
+              Update the title, description, status, or attach a video lecture
+              URL.
+            </p>
+            <form onSubmit={handleModuleSave} className="student-query-form">
+              <label className="form-label">
+                Title
+                <input
+                  className="form-input"
+                  value={moduleForm.title}
+                  onChange={(e) =>
+                    setModuleForm((f) => ({ ...f, title: e.target.value }))
+                  }
+                  required
+                />
+              </label>
+
+              <label className="form-label">
+                Description
+                <textarea
+                  className="form-textarea"
+                  rows="3"
+                  value={moduleForm.description}
+                  onChange={(e) =>
+                    setModuleForm((f) => ({
+                      ...f,
+                      description: e.target.value,
+                    }))
+                  }
+                />
+              </label>
+
+              <label className="form-label">
+                Status
+                <select
+                  className="form-input"
+                  value={moduleForm.status}
+                  onChange={(e) =>
+                    setModuleForm((f) => ({ ...f, status: e.target.value }))
+                  }
+                >
+                  <option value="Draft">Draft</option>
+                  <option value="In Review">In Review</option>
+                  <option value="Published">Published</option>
+                </select>
+              </label>
+
+              <label className="form-label">
+                Video lecture URL
+                <input
+                  className="form-input"
+                  value={moduleForm.videoUrl}
+                  onChange={(e) =>
+                    setModuleForm((f) => ({ ...f, videoUrl: e.target.value }))
+                  }
+                  placeholder="YouTube link or video file URL"
+                />
+              </label>
+
+              <div className="admin-article-form-actions">
+                <button type="submit" className="btn-primary">
+                  Save Module
+                </button>
+                <button
+                  type="button"
+                  className="link-chip"
+                  onClick={closeModuleEditor}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </>
   );
 }
@@ -594,6 +721,17 @@ function CitizenDashboard({ userId }) {
     );
   };
 
+  const loadMyQueries = async (uid, setFn) => {
+    if (!uid) return;
+    try {
+      const res = await fetch(`${API_BASE}/api/queries?askedBy=${uid}`);
+      const data = await res.json();
+      setFn(data);
+    } catch (err) {
+      console.error("Error loading my queries:", err);
+    }
+  };
+
   const handleSubmitQuery = async (e) => {
     e.preventDefault();
     setQueryMessage("");
@@ -619,7 +757,7 @@ function CitizenDashboard({ userId }) {
         body: JSON.stringify({
           text: question,
           category,
-          askedBy: userId, // use logged-in citizen
+          askedBy: userId,
         }),
       });
       const json = await res.json();
@@ -633,36 +771,65 @@ function CitizenDashboard({ userId }) {
       if (form) {
         form.reset();
       }
-      // reload my queries after submitting
-      loadMyQueries(userId, setMyQueries);
+      await loadMyQueries(userId, setMyQueries);
     } catch (err) {
       console.error(err);
       setQueryMessage("Network error. Please try again.");
     }
   };
 
-  // helper to load queries
-  const loadMyQueries = async (uid, setFn) => {
-    if (!uid) return;
-    try {
-      const res = await fetch(
-        `${API_BASE}/api/queries?askedBy=${uid}`
-      );
-      const data = await res.json();
-      setFn(data);
-    } catch (err) {
-      console.error("Error loading my queries:", err);
-    }
-  };
-
-
   useEffect(() => {
-  console.log("CitizenDashboard userId =", userId);
-  console.log("Citizen myQueries =", myQueries);
-}, [userId, myQueries]);
+    if (userId) {
+      loadMyQueries(userId, setMyQueries);
+    }
+  }, [userId]);
 
   return (
     <>
+      {/* Citizen image hero strip */}
+      <div className="citizen-hero-strip">
+        <button
+          className="citizen-hero-card"
+          onClick={() => navigate("/constitution-explore")}
+        >
+          <img
+            src="/parliament.jpg"
+            alt="Indian Parliament building"
+            className="citizen-hero-image"
+          />
+          <div className="citizen-hero-caption">Indian Constitution</div>
+        </button>
+
+        <button
+          className="citizen-hero-card"
+          onClick={() =>
+            navigate("/constitution-explore?section=supremeCourt")
+          }
+        >
+          <img
+            src="/supreme court.png"
+            alt="Supreme Court of India"
+            className="citizen-hero-image"
+          />
+          <div className="citizen-hero-caption">Judiciary in India</div>
+        </button>
+
+        <button
+          className="citizen-hero-card"
+          onClick={() => navigate("/constitution-explore?section=ambedkar")}
+        >
+          <img
+            src="/br ambedhkar.png"
+            alt="Dr B. R. Ambedkar"
+            className="citizen-hero-image"
+          />
+          <div className="citizen-hero-caption">
+            Dr B. R. Ambedkar &amp; the Constitution
+          </div>
+        </button>
+      </div>
+
+      {/* My Learning Hub */}
       <div className="card">
         <h2 className="card-title">My Learning Hub</h2>
         <p className="card-text">
@@ -687,6 +854,12 @@ function CitizenDashboard({ userId }) {
             onClick={() => navigate("/quizzes")}
           >
             Attempt Quizzes
+          </button>
+          <button
+            className="link-chip"
+            onClick={() => navigate("/constitution-explore")}
+          >
+            Explore Constitution with Images
           </button>
         </div>
 
@@ -823,7 +996,6 @@ function CitizenDashboard({ userId }) {
     </>
   );
 }
-
 
 /* ---------------- Legal Expert Dashboard ---------------- */
 
@@ -1032,12 +1204,11 @@ function Home({ role, userId }) {
 
       {/* Role‑specific dashboards */}
       <section className="grid-sections" style={{ marginTop: 32 }}>
-  {role === "admin" && <AdminDashboard />}
-  {role === "educator" && <EducatorDashboard userId={userId} />}
-  {role === "citizen" && <CitizenDashboard userId={userId} />}  {/* <- change */}
-  {role === "legal" && <LegalExpertDashboard />}
-</section>
-
+        {role === "admin" && <AdminDashboard />}
+        {role === "educator" && <EducatorDashboard userId={userId} />}
+        {role === "citizen" && <CitizenDashboard userId={userId} />}
+        {role === "legal" && <LegalExpertDashboard />}
+      </section>
     </main>
   );
 }

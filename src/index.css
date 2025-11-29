@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&display=swap");
+
 *,
 *::before,
 *::after {
@@ -8,12 +10,19 @@
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
   color: #111827;
-  background-color: #f3f4f6;
+  background-color: transparent;
 }
 
 body {
   margin: 0;
+  font-family: "Lora", serif;
+  font-size: 16px;
+  line-height: 1.6;
+  background: linear-gradient(180deg, #0b1f33 0%, #12324a 45%, #184a6a 100%);
+  color: #f9fafb;
 }
+
+
 
 .app-root {
   min-height: 100vh;
@@ -65,65 +74,91 @@ body {
 
 .page {
   padding: 32px min(5vw, 48px);
+  /* let body gradient show through */
+  background: transparent;
 }
 
 /* Login page */
 
+.login-video-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: -2;
+}
+
 .login-page {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-}
-
-/* Constitution background for login */
-
-.login-page--constitution {
   position: relative;
-  min-height: 100vh;
-  background-image: url("/constitution_bg.png");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  background:transparent ;
 }
 
+
+/* dark overlay */
+/* video just above body, below overlay + content */
+
+
+/* dark overlay above video */
 .login-overlay {
   position: fixed;
-  inset: 0;
-  background: rgba(15, 23, 42, 0.6);
-  z-index: 0;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 1;      /* <-- was -1 */
 }
 
-/* Solid dark login card */
-
-.login-card {
+/* login content above overlay */
+.login-content {
+  margin-left: auto;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 2rem 4rem;
   position: relative;
-  z-index: 1;
-  width: 100%;
-  max-width: 440px;
-  padding: 28px 26px 26px;
-  border-radius: 22px;
-  background: rgba(17, 24, 39, 0.9);
-  box-shadow: 0 22px 55px rgba(0, 0, 0, 0.55);
-  border: 1px solid rgba(148, 163, 184, 0.4);
+  z-index: 2;      /* explicit */
 }
 
 
+
+/* glass card */
+.login-card.login-card--glass {
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  padding: 2rem 2.5rem;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45);
+  color: #ffffff;
+}
 
 .login-header {
   margin-bottom: 16px;
 }
 
+/* headings white, supporting text cream */
+
 .login-title {
-  margin: 0 0 4px;
-  font-size: 1.6rem;
-  color: #f9fafb;
+  margin: 0 0 6px;
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #ffffff;
 }
 
-.login-subtitle {
-  margin: 0 0 20px;
-  color: #e5e7eb;
-  font-size: 0.9rem;
+.login-subtitle,
+.login-footer-text {
+  color: #ffe7c4;
+  font-size: 0.95rem;
 }
 
 .login-error {
@@ -150,67 +185,88 @@ body {
   gap: 14px;
 }
 
-.form-label {
-  font-size: 0.85rem;
-  color: #e5e7eb;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+.form-label,
+.student-progress-meta,
+.login-footer-text,
+.password-hint {
+  font-size: 0.95rem;
 }
+
+/* inputs: Ashoka Chakra blue with white text */
 
 .form-input {
   border-radius: 999px;
-  border: 1px solid #4b5563;
-  padding: 10px 14px;
-  font-size: 0.9rem;
+  border: 1px solid #054187;
+  padding: 12px 16px;
+  font-size: 0.95rem;
   outline: none;
-  background: rgba(15, 23, 42, 0.95);
-  color: #f9fafb;
+  background: #054187;
+  color: #ffffff;
 }
 
 .form-input::placeholder {
-  color: #9ca3af;
+  color: #e5e7eb;
 }
 
 .form-input:focus {
-  border-color: #60a5fa;
-  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.6);
+  border-color: #001f54;
+  box-shadow: 0 0 0 1px rgba(0, 31, 84, 0.4);
 }
 
 .form-textarea {
   border-radius: 12px;
-  border: 1px solid #d1d5db;
+  border: 1px solid #054187;
   padding: 10px 12px;
   font-size: 0.9rem;
   resize: vertical;
+  background: #054187;
+  color: #ffffff;
 }
 
+/* primary button: saffron with white text */
+
 .btn-primary {
-  margin-top: 10px;
+  margin-top: 12px;
   width: 100%;
   border: none;
-  padding: 10px 16px;
+  padding: 12px 18px;
   border-radius: 999px;
-  background: linear-gradient(135deg, #2563eb, #4f46e5);
-  color: #f9fafb;
-  font-weight: 600;
-  font-size: 0.95rem;
+  background: #ff9933;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1rem;
   cursor: pointer;
+}
+
+.btn-primary:hover {
+  background: #e6862b;
 }
 
 .login-footer-text {
   margin-top: 16px;
   font-size: 0.8rem;
-  color: #e5e7eb;
+  color: #ffe7c4;
   text-align: center;
+}
+
+/* chips (Create an account, Back to login) */
+
+.link-chip {
+  background: #ffffff;
+  color: #054187;
+  border: 1px solid #054187;
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 0.8rem;
+  cursor: pointer;
 }
 
 /* Password hint */
 
 .password-hint {
   margin: 4px 0 0;
-  font-size: 0.78rem;
-  color: #9ca3af;
+  font-size: 0.82rem;
+  color: #e5e7eb;
 }
 
 /* Home page */
@@ -220,48 +276,53 @@ body {
 }
 
 .hero-title {
-  font-size: 2rem;
-  margin-bottom: 8px;
+  font-size: 2.4rem;
+  margin-bottom: 10px;
+  color: #f9fafb;
 }
 
 .hero-text {
-  color: #4b5563;
-  max-width: 600px;
-  font-size: 0.98rem;
+  font-size: 1.05rem;
+  color: #e5e7eb;
 }
-
 .hero-actions {
   margin-top: 16px;
 }
 
+/* grid holding the three big cards */
 .grid-sections {
   margin-top: 28px;
   display: grid;
   gap: 18px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .grid-sections {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
+
 .card {
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.92);
   border-radius: 16px;
   padding: 18px 16px;
-  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  color: #0b1f33;
 }
 
+/* slightly darker text for headings, larger font */
 .card-title {
-  margin: 0 0 6px;
-  font-size: 1rem;
+  margin: 0 0 8px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #082341;
 }
 
 .card-text {
   margin: 0;
-  font-size: 0.9rem;
-  color: #6b7280;
+  font-size: 1rem;
+  color: #1f2933;
 }
 
 /* Articles list (if used elsewhere) */
@@ -315,7 +376,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: #9ca3af;
 }
 
@@ -366,12 +427,12 @@ body {
 }
 
 .admin-stat-label {
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: #4b5563;
 }
 
 .admin-stat-hint {
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   color: #9ca3af;
 }
 
@@ -452,7 +513,7 @@ body {
 }
 
 .legal-task-hint {
-  font-size: 0.78rem;
+  font-size: 0.85rem;
   color: #6b7280;
 }
 
@@ -467,7 +528,7 @@ body {
 .student-progress-row {
   display: flex;
   justify-content: space-between;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: #4b5563;
   margin-bottom: 6px;
 }
@@ -493,7 +554,7 @@ body {
   display: flex;
   justify-content: space-between;
   margin-top: 6px;
-  font-size: 0.78rem;
+  font-size: 0.85rem;
   color: #6b7280;
 }
 
@@ -506,6 +567,7 @@ body {
   margin: 8px 0 12px;
 }
 
+/* (Note: login page overrides link-chip for its own buttons) */
 .link-chip {
   border: 1px solid #d1d5db;
   background: #f9fafb;
@@ -549,7 +611,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.88rem;
+  font-size: 0.9rem;
 }
 
 .duty-label {
@@ -602,6 +664,7 @@ body {
   box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
   display: flex;
   gap: 12px;
+  font-size: 0.95rem;
 }
 
 .video-thumbnail {
@@ -631,7 +694,7 @@ body {
 
 .video-meta {
   margin: 0;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: #6b7280;
 }
 
@@ -657,6 +720,7 @@ body {
   border-radius: 16px;
   padding: 16px;
   box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+  font-size: 0.95rem;
 }
 
 .note-title,
@@ -691,6 +755,7 @@ body {
   border-radius: 16px;
   padding: 16px;
   box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+  font-size: 0.95rem;
 }
 
 .forum-title {
@@ -700,7 +765,7 @@ body {
 
 .forum-meta {
   margin: 0 0 10px;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: #6b7280;
 }
 
@@ -792,7 +857,7 @@ body {
 }
 
 .admin-article-meta {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: #6b7280;
 }
 
@@ -802,7 +867,7 @@ body {
 }
 
 .admin-article-empty {
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: #9ca3af;
 }
 
@@ -817,4 +882,161 @@ body {
   display: flex;
   gap: 8px;
   margin-top: 4px;
+}
+.role-hero {
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  height: 180px;
+  box-shadow: 0 14px 35px rgba(15, 23, 42, 0.4);
+}
+
+.role-hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.65) contrast(1.05);
+}
+
+.role-hero-overlay {
+  position: absolute;
+  inset: 0;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.role-hero-title {
+  margin: 0 0 6px;
+  font-family: "Lora", serif;
+  font-size: 1.6rem;
+  color: #f9fafb;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+.role-hero-text {
+  margin: 0;
+  max-width: 460px;
+  font-size: 0.95rem;
+  color: #e5e7eb;
+}
+
+/* Slight tint variants by role */
+.role-hero--citizen .role-hero-overlay {
+  background: linear-gradient(90deg, rgba(5, 65, 135, 0.75), rgba(0, 0, 0, 0.2));
+}
+
+.role-hero--educator .role-hero-overlay {
+  background: linear-gradient(90deg, rgba(24, 74, 106, 0.8), rgba(0, 0, 0, 0.2));
+}
+
+.role-hero--legal .role-hero-overlay {
+  background: linear-gradient(90deg, rgba(67, 56, 202, 0.8), rgba(0, 0, 0, 0.2));
+}
+/* Citizen hero image strip */
+
+.citizen-hero-strip {
+  margin-top: 8px;
+  margin-bottom: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+.citizen-hero-card {
+  flex: 1 1 260px;
+  max-width: 360px;
+  border: none;
+  padding: 0;
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.25);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.citizen-hero-image {
+  width: 100%;
+  height: 250px;      /* adjust height as you like */
+  object-fit: cover;  /* this keeps the image nicely cropped */
+  display: block;
+}
+
+.citizen-hero-caption {
+  padding: 10px 14px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #12324a;
+  background: #f9fafb;
+}
+
+.constitution-strip {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.constitution-card {
+  border: none;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.constitution-card--active {
+  box-shadow: 0 14px 32px rgba(59, 130, 246, 0.55);
+  transform: translateY(-2px);
+}
+
+.constitution-card-image {
+  display: block;
+  width: 220px;
+  height: 130px;
+  object-fit: cover;
+}
+
+.constitution-card-label {
+  display: block;
+  padding: 8px 10px;
+  background: rgba(15, 23, 42, 0.96);
+  color: #f9fafb;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.constitution-detail-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.constitution-detail-image {
+  width: 100%;
+  max-height: 260px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+@media (min-width: 768px) {
+  .constitution-detail-body {
+    flex-direction: row;
+  }
+
+  .constitution-detail-image {
+    width: 40%;
+  }
+
+  .constitution-detail-text {
+    flex: 1;
+  }
 }

@@ -6,7 +6,6 @@ import Login from "./pages/Login.jsx";
 import Home from "./pages/Home.jsx";
 import AboutConstitution from "./pages/AboutConstitution.jsx";
 import Articles from "./pages/Articles.jsx";
-import "./index.css";
 import VideoLibrary from "./pages/VideoLibrary.jsx";
 import StudyNotes from "./pages/StudyNotes.jsx";
 import Quizzes from "./pages/Quizzes.jsx";
@@ -14,6 +13,8 @@ import Forums from "./pages/Forums.jsx";
 import AdminArticles from "./pages/AdminArticles.jsx";
 import AdminModules from "./pages/AdminModules.jsx";
 import AdminQuizzes from "./pages/AdminQuizzes.jsx";
+import "./index.css";
+import ConstitutionExplore from "./pages/ConstitutionExplore.jsx";
 
 const API_BASE = "http://localhost:5000";
 
@@ -95,6 +96,15 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+  path="/constitution-explore"
+  element={
+    <ProtectedRoute isAuthenticated={isAuthenticated}>
+      <ConstitutionExplore />
+    </ProtectedRoute>
+  }
+/>
+
         <Route
           path="/admin/articles"
           element={
