@@ -111,7 +111,7 @@ function Login({ onLogin, isAuthenticated }) {
       {/* Fullscreen background video */}
       <video
         className="login-video-bg"
-        src="/LOGIN OUTRO.mp4"
+        src="/IndianConstitutionProject/LOGIN OUTRO.mp4"
         autoPlay
         loop
         muted
