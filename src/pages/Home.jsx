@@ -881,7 +881,7 @@ function CitizenDashboard({ userId }) {
           onClick={() => navigate("/constitution-explore")}
         >
           <img
-            src="/IndianConstitutionProject/parliament.jpg"
+            src="/parliament.jpg"
             alt="Indian Parliament building"
             className="citizen-hero-image"
           />
@@ -895,7 +895,7 @@ function CitizenDashboard({ userId }) {
           }
         >
           <img
-            src="/IndianConstitutionProject/supreme court.png"
+            src="/supreme court.png"
             alt="Supreme Court of India"
             className="citizen-hero-image"
           />
@@ -907,7 +907,7 @@ function CitizenDashboard({ userId }) {
           onClick={() => navigate("/constitution-explore?section=ambedkar")}
         >
           <img
-            src="/IndianConstitutionProject/br ambedhkar.png"
+            src="/br ambedhkar.png"
             alt="Dr B. R. Ambedkar"
             className="citizen-hero-image"
           />
