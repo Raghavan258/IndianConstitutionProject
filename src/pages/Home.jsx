@@ -1209,14 +1209,18 @@ function InfoModal({ open, onClose, title, description }) {
 function Home({ role, userId }) {
   const navigate = useNavigate();
 
+  // Normalize role from Login/App
+  const normalizedRole = role?.toLowerCase();
+
   const roleTitleMap = {
     admin: "Admin Dashboard",
     educator: "Educator Dashboard",
-    citizen: "Citizen Dashboard",
-    legal: "Legal Expert Dashboard",
+    "citizen / student": "Citizen Dashboard",
+    "legal expert": "Legal Expert Dashboard",
   };
 
-  const dashboardTitle = roleTitleMap[role] || "Citizen Dashboard";
+  const dashboardTitle =
+    roleTitleMap[normalizedRole] || "Citizen Dashboard";
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({
@@ -1224,38 +1228,8 @@ function Home({ role, userId }) {
     description: "",
   });
 
-  const openInfo = (type) => {
-    if (type === "preamble") {
-      setModalData({
-        title: "About the Preamble",
-        description:
-          "The Preamble introduces the Constitution and declares India as a Sovereign, Socialist, Secular, Democratic Republic, aiming to secure justice, liberty, equality, and fraternity for all citizens.",
-      });
-    } else if (type === "rights") {
-      setModalData({
-        title: "About Fundamental Rights",
-        description:
-          "Fundamental Rights, mainly in Articles 14–21, protect key freedoms such as equality before law, freedom of speech and expression, and protection of life and personal liberty.",
-      });
-    } else if (type === "duties") {
-      setModalData({
-        title: "About Fundamental Duties",
-        description:
-          "Fundamental Duties under Article 51A remind every citizen to respect the Constitution, promote harmony, protect the environment, and preserve the unity of the nation.",
-      });
-    }
-    setModalOpen(true);
-  };
-
   return (
     <main className="page home-page">
-      <InfoModal
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
-        title={modalData.title}
-        description={modalData.description}
-      />
-
       <section className="hero">
         <h1 className="hero-title">{dashboardTitle}</h1>
         <p className="hero-text">
@@ -1272,79 +1246,17 @@ function Home({ role, userId }) {
         </div>
       </section>
 
-      {/* Top cards */}
-      <section className="grid-sections">
-        <div className="card">
-          <h2 className="card-title">Preamble</h2>
-          <p className="card-text">
-            Understand the vision, values, and objectives guiding the
-            Constitution.
-          </p>
-          <div className="card-actions">
-            <button
-              className="link-chip"
-              onClick={() => navigate("/articles#preamble")}
-            >
-              Read Section
-            </button>
-            <button
-              className="link-chip"
-              onClick={() => openInfo("preamble")}
-            >
-              Learn More
-            </button>
-          </div>
-        </div>
-
-        <div className="card">
-          <h2 className="card-title">Fundamental Rights</h2>
-          <p className="card-text">
-            Explore rights that protect individual freedom and equality.
-          </p>
-          <div className="card-actions">
-            <button
-              className="link-chip"
-              onClick={() => navigate("/articles#rights")}
-            >
-              View Rights
-            </button>
-            <button
-              className="link-chip"
-              onClick={() => openInfo("rights")}
-            >
-              Learn More
-            </button>
-          </div>
-        </div>
-
-        <div className="card">
-          <h2 className="card-title">Fundamental Duties</h2>
-          <p className="card-text">
-            Discover responsibilities expected from every citizen.
-          </p>
-          <div className="card-actions">
-            <button
-              className="link-chip"
-              onClick={() => navigate("/articles#duties")}
-            >
-              View Duties
-            </button>
-            <button
-              className="link-chip"
-              onClick={() => openInfo("duties")}
-            >
-              Learn More
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* Role‑specific dashboards */}
       <section className="grid-sections" style={{ marginTop: 32 }}>
-        {role === "admin" && <AdminDashboard />}
-        {role === "educator" && <EducatorDashboard userId={userId} />}
-        {role === "citizen" && <CitizenDashboard userId={userId} />}
-        {role === "legal" && <LegalExpertDashboard />}
+        {normalizedRole === "admin" && <AdminDashboard />}
+        {normalizedRole === "educator" && (
+          <EducatorDashboard userId={userId} />
+        )}
+        {normalizedRole === "citizen / student" && (
+          <CitizenDashboard userId={userId} />
+        )}
+        {normalizedRole === "legal expert" && (
+          <LegalExpertDashboard />
+        )}
       </section>
     </main>
   );

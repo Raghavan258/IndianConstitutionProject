@@ -13,10 +13,8 @@ import Forums from "./pages/Forums.jsx";
 import AdminArticles from "./pages/AdminArticles.jsx";
 import AdminModules from "./pages/AdminModules.jsx";
 import AdminQuizzes from "./pages/AdminQuizzes.jsx";
-import "./index.css";
 import ConstitutionExplore from "./pages/ConstitutionExplore.jsx";
-
-const API_BASE = "http://localhost:5000";
+import "./index.css";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -40,41 +38,65 @@ function App() {
     }
   }, []);
 
-  // Async login that talks to Node + Mongo backend
-  const handleLogin = async (email, password, role) => {
-    try {
-      const res = await fetch(`${API_BASE}/api/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password, role }),
-      });
+  // Frontend-only login (no backend)
+  const handleLogin = async (email, password) => {
+  try {
+    const users = [
+      {
+        id: "1",
+        email: "admin@gmail.com",
+        password: "admin123",
+        role: "Admin",
+      },
+      {
+        id: "2",
+        email: "student@gmail.com",
+        password: "1234",
+        role: "Citizen / Student",
+      },
+      {
+        id: "3",
+        email: "educator@gmail.com",
+        password: "educator123",
+        role: "Educator",
+      },
+      {
+        id: "4",
+        email: "legal@gmail.com",
+        password: "legal123",
+        role: "Legal Expert",
+      },
+    ];
 
-      const data = await res.json();
+    const foundUser = users.find(
+      (u) =>
+        u.email === email &&
+        u.password === password
+    );
 
-      if (!res.ok) {
-        return { ok: false, message: data.message || "Login failed." };
-      }
-
-      setIsAuthenticated(true);
-      setUserRole(data.user.role);
-      setUserId(data.user.id);
-
-      localStorage.setItem(
-        "session",
-        JSON.stringify({
-          token: data.token,
-          role: data.user.role,
-          email: data.user.email,
-          userId: data.user.id,
-          isAuthenticated: true,
-        })
-      );
-
-      return { ok: true };
-    } catch {
-      return { ok: false, message: "Network error. Please try again." };
+    if (!foundUser) {
+      return { ok: false, message: "Invalid credentials." };
     }
-  };
+
+    setIsAuthenticated(true);
+    setUserRole(foundUser.role);
+    setUserId(foundUser.id);
+
+    localStorage.setItem(
+      "session",
+      JSON.stringify({
+        role: foundUser.role,
+        email: foundUser.email,
+        userId: foundUser.id,
+        isAuthenticated: true,
+      })
+    );
+
+    return { ok: true };
+  } catch {
+    return { ok: false, message: "Login failed." };
+  }
+};
 
   const handleLogout = () => {
     setIsAuthenticated(false);
@@ -85,7 +107,9 @@ function App() {
 
   return (
     <div className="app-root">
-      {isAuthenticated && <Navbar onLogout={handleLogout} role={userRole} />}
+      {isAuthenticated && (
+        <Navbar onLogout={handleLogout} role={userRole} />
+      )}
 
       <Routes>
         <Route
@@ -96,14 +120,15 @@ function App() {
             </ProtectedRoute>
           }
         />
+
         <Route
-  path="/constitution-explore"
-  element={
-    <ProtectedRoute isAuthenticated={isAuthenticated}>
-      <ConstitutionExplore />
-    </ProtectedRoute>
-  }
-/>
+          path="/constitution-explore"
+          element={
+            <ProtectedRoute isAuthenticated={isAuthenticated}>
+              <ConstitutionExplore />
+            </ProtectedRoute>
+          }
+        />
 
         <Route
           path="/admin/articles"
@@ -113,6 +138,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/admin/modules"
           element={
@@ -121,6 +147,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/admin/quizzes"
           element={
@@ -129,6 +156,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/notes"
           element={
@@ -137,6 +165,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/forums"
           element={
@@ -145,6 +174,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/quizzes"
           element={
@@ -153,6 +183,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/login"
           element={
@@ -162,6 +193,7 @@ function App() {
             />
           }
         />
+
         <Route
           path="/"
           element={
@@ -170,6 +202,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/about"
           element={
@@ -178,6 +211,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/articles"
           element={
@@ -186,6 +220,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </div>
